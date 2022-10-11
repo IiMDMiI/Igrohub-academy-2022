@@ -8,21 +8,21 @@ namespace ExpansionPack
 {
     public class LevelLoader : MonoBehaviour
     {
+        private const string CompletedLevels = "CompletedLevels";
         [SerializeField] private List<Level> _levels;
         [SerializeField] private Button _restart;
         [SerializeField] private Button _next;
         [SerializeField] private WinLoseUI _winLoseUI;
-        private const string CompletedLevels = "CompletedLevels";
-        [SerializeField] private int _currentLevelIndex;
+        private int _currentLevelIndex;
         private Level _currentLevel;
 
-
         private void Awake()
-        {
+        {      
+            //PlayerPrefs.SetInt(CompletedLevels, 0);
+
             _restart.onClick.AddListener(() => StartCoroutine(nameof(Restart), 0.5f));
             _next.onClick.AddListener(() => StartCoroutine(nameof(Next), 0.5f));
-
-            //PlayerPrefs.SetInt(CompletedLevels, 0);
+           
             _currentLevelIndex = PlayerPrefs.GetInt(CompletedLevels, 0);
             LoadLevel(_currentLevelIndex);
         }
@@ -40,7 +40,6 @@ namespace ExpansionPack
             SaveLevel();
             LoadLevel(_currentLevelIndex);
         }
-
         private void DestroyCurrentLevel()
         {
             if (_currentLevel != null)
@@ -49,7 +48,6 @@ namespace ExpansionPack
                 Destroy(_currentLevel.gameObject);
             }
         }
-
         private void SaveLevel() =>
             PlayerPrefs.SetInt(CompletedLevels, _currentLevelIndex);
 
