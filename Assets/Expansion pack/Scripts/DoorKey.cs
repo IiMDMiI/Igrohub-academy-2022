@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Game;
 
@@ -12,7 +10,7 @@ namespace ExpansionPack
         private void OnTriggerEnter(Collider other)
         {
             if(other.TryGetComponent(out Player player))
-            {    Debug.Log("As");
+            {   
                 var doors = FindObjectsOfType<LockedDoor>();
                 foreach (var door in doors)
                 {  

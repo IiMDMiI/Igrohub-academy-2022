@@ -21,13 +21,13 @@ namespace ExpansionPack
         }
 
         private void OnTriggerEnter(Collider other)
-        {
+        {   
+            if(other.TryGetComponent(out Teleport teleport))
+                return;            
             if (other.TryGetComponent(out Player player))
-                player.Kill();
-                       
-            if(other.TryGetComponent(out Shooting shooting))
-                Destroy(gameObject);        
-            
+                player.Kill();                       
+            if(!other.TryGetComponent(out Shooting shooting))
+                Destroy(gameObject);           
         }
 
         private void OnDestroy() => 
