@@ -13,16 +13,16 @@ namespace ExpansionPack
         [SerializeField] private Button _next;
         [SerializeField] private WinLoseUI _winLoseUI;
         private const string CompletedLevels = "CompletedLevels";
-        private int _currentLevelIndex;
+        [SerializeField] private int _currentLevelIndex;
         private Level _currentLevel;
 
 
         private void Awake()
         {
-            _restart.onClick.AddListener(() => LoadLevel(_currentLevelIndex));
-            _next.onClick.AddListener(LoadNextLevel);
+            _restart.onClick.AddListener(() => StartCoroutine(nameof(Restart), 0.5f));
+            _next.onClick.AddListener(() => StartCoroutine(nameof(Next), 0.5f));
 
-            PlayerPrefs.SetInt(CompletedLevels, 0);
+            //PlayerPrefs.SetInt(CompletedLevels, 0);
             _currentLevelIndex = PlayerPrefs.GetInt(CompletedLevels, 0);
             LoadLevel(_currentLevelIndex);
         }
@@ -34,16 +34,22 @@ namespace ExpansionPack
 
         private void LoadNextLevel()
         {
+            DestroyCurrentLevel();
+
+            _currentLevelIndex = _currentLevelIndex + 1 >= _levels.Count ? 0 : _currentLevelIndex + 1;
+            SaveLevel();
+            LoadLevel(_currentLevelIndex);
+        }
+
+        private void DestroyCurrentLevel()
+        {
             if (_currentLevel != null)
             {
                 UnsubscribeFromLevelEvents(_currentLevel);
                 Destroy(_currentLevel.gameObject);
             }
-
-            _currentLevelIndex = _currentLevelIndex + 1 >= transform.childCount ? 0 : _currentLevelIndex + 1;
-            SaveLevel();
-            LoadLevel(_currentLevelIndex);
         }
+
         private void SaveLevel() =>
             PlayerPrefs.SetInt(CompletedLevels, _currentLevelIndex);
 
@@ -58,23 +64,24 @@ namespace ExpansionPack
             level.OnWin -= OnWinHandler;
         }
 
-        private void OnWinHandler()
-        {
+        private void OnWinHandler() =>
             _winLoseUI.Show(true);
-        }
-        private void OnLoseHandler()
-        {
+        private void OnLoseHandler() =>
             _winLoseUI.Show(false);
-            //LoadNextLevel();
-        }
 
-        private IEnumerator ChangeLevel(float delay = 0.5f)
+        private IEnumerator Restart(float delay)
         {
             _winLoseUI.Hide();
             yield return new WaitForSeconds(delay);
-            
+            DestroyCurrentLevel();
+            LoadLevel(_currentLevelIndex);
         }
-
+        private IEnumerator Next(float delay)
+        {
+            _winLoseUI.Hide();
+            yield return new WaitForSeconds(delay);
+            LoadNextLevel();
+        }
 
     }
 

@@ -351,7 +351,7 @@ GameObject:
   - component: {fileID: 830731324250916368}
   - component: {fileID: 830731324250916369}
   m_Layer: 0
-  m_Name: Level1
+  m_Name: Level2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -391,7 +391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _timerIsOn: 1
-  _timerValue: 20
+  _timerValue: 15
   _timerView: {fileID: 0}
   _player: {fileID: 830731324006767398}
   _exitFromLevel: {fileID: 7072295315770549989}

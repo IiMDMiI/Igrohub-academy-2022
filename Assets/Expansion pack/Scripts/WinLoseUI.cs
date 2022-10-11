@@ -6,15 +6,15 @@ using UnityEngine.UI;
 public class WinLoseUI : MonoBehaviour
 {
     private const string ShowAnimaton = "Down";
-    private const string HideAnimaton = "Hide";
+    private const string HideAnimaton = "Up";
     [SerializeField] private Animator _animator;
-    [SerializeField] private Image _win;
-    [SerializeField] private Image _lose;
+    [SerializeField] private GameObject _win;
+    [SerializeField] private GameObject _lose;
 
     public void Show(bool win)
     {
-        _win.enabled = win;
-        _lose.enabled = !win;
+        _win.SetActive(win);
+        _lose.SetActive(!win);
         
         _animator.Play(ShowAnimaton);
 
