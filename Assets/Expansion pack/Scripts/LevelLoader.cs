@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,27 +8,33 @@ using Game;
 namespace ExpansionPack
 {
     public class LevelLoader : MonoBehaviour
-    {
+    {   
+        public static LevelLoader Instance;
         private const string CompletedLevels = "CompletedLevels";
         [SerializeField] private List<Level> _levels;
         [SerializeField] private Button _restart;
         [SerializeField] private Button _next;
         [SerializeField] private WinLoseUI _winLoseUI;
+        
+        public event Action OnLevelLoad;
+        
         private int _currentLevelIndex;
         private Level _currentLevel;
 
         private void Awake()
-        {      
+        {
             //PlayerPrefs.SetInt(CompletedLevels, 0);
+            Instance = this;
 
             _restart.onClick.AddListener(() => StartCoroutine(nameof(Restart), 0.5f));
             _next.onClick.AddListener(() => StartCoroutine(nameof(Next), 0.5f));
-           
+
             _currentLevelIndex = PlayerPrefs.GetInt(CompletedLevels, 0);
             LoadLevel(_currentLevelIndex);
         }
         private void LoadLevel(int index)
-        {
+        {   
+            OnLevelLoad?.Invoke();
             _currentLevel = Instantiate(_levels[index]);
             SubscribeToLevelEvents(_currentLevel);
         }

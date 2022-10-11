@@ -920,7 +920,6 @@ MonoBehaviour:
   _restart: {fileID: 2127379344}
   _next: {fileID: 760907764}
   _winLoseUI: {fileID: 1959696433}
-  _currentLevelIndex: 0
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
