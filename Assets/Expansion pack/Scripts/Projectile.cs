@@ -25,7 +25,7 @@ namespace ExpansionPack
             if (other.TryGetComponent(out Player player))
                 player.Kill();
                        
-            if(other.GetComponent<Shooting>() == null)
+            if(other.TryGetComponent(out Shooting shooting))
                 Destroy(gameObject);        
             
         }
